@@ -13,7 +13,7 @@ class DogNCatDataSet(DataLoader):
     """
     MNIST data loading demo using BaseDataLoader
     """
-    def __init__(self, data_dir:str = None, batch_size:int = 64):
+    def __init__(self, data_dir:str = None, batch_size:int = 64, transform = None):
         if not data_dir:
             data_dir = pathlib.Path.cwd().parent.joinpath('data')
 
@@ -23,12 +23,18 @@ class DogNCatDataSet(DataLoader):
         self.image_names = os.listdir(self.image_dir)
         self.batch_size = batch_size
         self.class_dict = {'dog':0, 'cat':1}
+        if transform:
+            self.transform = transform
+        else:
+            self.transform = torchvision.transforms.Compose([
+                torchvision.transforms.Resize(227,227),
+                torchvision.transforms.ToTensor(),
+                torchvision.transforms.Normalize((0.485,0.456,0.406),(0.229,0.224,0.225))
+            ])
         print(f"total data len : {len(self.image_names)}")
     def get_image(self, file_name):
         im = Image.open(self.image_dir.joinpath(file_name)).convert('RGB')
-        im = torchvision.transforms.Resize((227, 227))(im)
-        image = torchvision.transforms.ToTensor()(im)
-        image = torchvision.transforms.Normalize((0.485,0.456,0.406),(0.229,0.224,0.225))(image)
+        image = self.transform(im)
         return image
     def __len__(self):
         return len(self.image_names)
