@@ -10,7 +10,7 @@ __pycache__/
 ./data/
 # trained model
 ./training_log/
-./saved_models/
+saved_models/
 
 # Distribution / packaging
 .Python
@@ -116,3 +116,4 @@ datasets/
 .vscode/
 .idea/
 __MACOSX/
+/saved_models/

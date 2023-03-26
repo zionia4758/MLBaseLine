@@ -16,8 +16,7 @@ class DogNCatDataSet(DataLoader):
     def __init__(self, data_dir:str = None, batch_size:int = 64, transform = None):
         if not data_dir:
             data_dir = pathlib.Path.cwd().parent.joinpath('data')
-
-        self.base_dir = data_dir
+        self.base_dir = pathlib.Path(data_dir)
         self.image_dir = self.base_dir.joinpath('images')
         self.annotation_dir = self.base_dir.joinpath('annotations')
         self.image_names = os.listdir(self.image_dir)
@@ -27,7 +26,7 @@ class DogNCatDataSet(DataLoader):
             self.transform = transform
         else:
             self.transform = torchvision.transforms.Compose([
-                torchvision.transforms.Resize(227,227),
+                torchvision.transforms.Resize((227,227)),
                 torchvision.transforms.ToTensor(),
                 torchvision.transforms.Normalize((0.485,0.456,0.406),(0.229,0.224,0.225))
             ])
@@ -53,3 +52,10 @@ def loader_test():
     model = DogNCatDataSet()
     print(model.__getitem__(3))
 # loader_test()
+
+
+def get_dataloader(name, args):
+    data_loader_list = {'DogAndCat': DogNCatDataSet}
+    print(args)
+    print()
+    return data_loader_list[name](**args)
