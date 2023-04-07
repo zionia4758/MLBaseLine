@@ -30,6 +30,7 @@
 ---
 ### Implementation
  - 1차. Trainer, Model, DataLoader, Logger 프로토타입 구현(2023-03-22)
+ - 2차. BaseDataLoader 구현
 
 
 
